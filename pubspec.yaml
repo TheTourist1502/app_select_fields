@@ -1,0 +1,28 @@
+name: app_select_fields
+description: Material 3 single-select and multi-select form fields for Flutter with a draggable bottom sheet, search, and lazy pagination — no extra dependencies.
+version: 0.0.1
+homepage: https://github.com/TheTourist1502/app_select_fields
+repository: https://github.com/TheTourist1502/app_select_fields
+issue_tracker: https://github.com/TheTourist1502/app_select_fields/issues
+topics:
+  - dropdown
+  - select
+  - form
+  - bottom-sheet
+  - material
+
+environment:
+  sdk: ^3.8.0
+  flutter: ">=3.22.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
