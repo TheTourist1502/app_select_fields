@@ -16,12 +16,12 @@ Useful as a Material dropdown alternative, multi-select chip picker, tag
 selector, or searchable option list in any `Form`.
 
 <p align="center">
-  <img src="docs/app-select-fields.png" width="240" alt="Both fields closed" />
-  <img src="docs/app-single-select.png" width="240" alt="AppSingleSelect sheet open" />
-  <img src="docs/app-multi-select.png" width="240" alt="AppMultiSelect sheet open" />
+  <img src="https://raw.githubusercontent.com/TheTourist1502/app_select_fields/master/docs/app-select-fields.png" width="240" alt="Both fields closed" />
+  <img src="https://raw.githubusercontent.com/TheTourist1502/app_select_fields/master/docs/app-single-select.png" width="240" alt="AppSingleSelect sheet open" />
+  <img src="https://raw.githubusercontent.com/TheTourist1502/app_select_fields/master/docs/app-multi-select.png" width="240" alt="AppMultiSelect sheet open" />
 </p>
 <p align="center">
-  <img src="docs/demo.gif" width="280" alt="Picking options in the bottom sheet" />
+  <img src="https://raw.githubusercontent.com/TheTourist1502/app_select_fields/master/docs/demo.gif" width="280" alt="Picking options in the bottom sheet" />
 </p>
 
 ## Features
