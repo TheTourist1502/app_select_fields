@@ -1,0 +1,17 @@
+docs/
+
+# Dart / Flutter
+.dart_tool/
+.packages
+build/
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# OS
+.DS_Store
+
+# Local tooling
+.claude/
