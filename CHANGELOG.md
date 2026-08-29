@@ -1,3 +1,9 @@
+## 0.0.5
+
+* Trim the `pubspec.yaml` description to 176 characters, within pub.dev's recommended 60–180 range, so the pub.dev score no longer flags it as too long.
+* Shrink `doc/demo.gif` from 11.4MB to ~4.7MB (smaller resolution, fewer frames, fewer colors) — GitHub's raw-content server serves files over roughly 10MB as `application/octet-stream` instead of `image/gif`, which silently broke the demo GIF on both the GitHub README and pub.dev's image proxy while the smaller screenshots rendered fine.
+* Smooth out the option-selection animation in both sheets: the row's background highlight and label style now transition instead of snapping, and the multi-select checkmark pops in with a slight overshoot.
+
 ## 0.0.4
 
 * Fix `AppSingleSelect` showing the plain hint (instead of a visible value) when a pre-set `value` isn't in the currently loaded `options` page — e.g. an edit form backed by lazy pagination whose matching page hasn't arrived yet.
