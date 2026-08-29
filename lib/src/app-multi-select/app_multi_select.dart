@@ -34,6 +34,10 @@ class AppMultiSelect<T> extends StatefulWidget {
     this.inputLabelStyle,
     this.selectedInputTemplate,
     this.optionTemplate,
+    this.cancelButtonLabel,
+    this.cancelButtonStyle,
+    this.confirmButtonLabel,
+    this.confirmButtonStyle,
     super.key,
   });
 
@@ -97,6 +101,20 @@ class AppMultiSelect<T> extends StatefulWidget {
   /// Builds each row's content in the option sheet in place of the default
   /// label [Text]. Called with that option's `label` and `value`.
   final SelectOptionBuilder<T>? optionTemplate;
+
+  /// Overrides the sheet's Cancel button label. Takes precedence over
+  /// [AppSelectStyle.cancelLabel].
+  final String? cancelButtonLabel;
+
+  /// Overrides the sheet's Cancel button style.
+  final ButtonStyle? cancelButtonStyle;
+
+  /// Overrides the sheet's confirm (OK) button label. Takes precedence over
+  /// [AppSelectStyle.okLabel].
+  final String? confirmButtonLabel;
+
+  /// Overrides the sheet's confirm (OK) button style.
+  final ButtonStyle? confirmButtonStyle;
 
   @override
   State<AppMultiSelect<T>> createState() => _AppMultiSelectState<T>();
@@ -177,6 +195,10 @@ class _AppMultiSelectState<T> extends State<AppMultiSelect<T>> {
         noRecordWidget: widget.noRecordWidget,
         displaySelectedCount: widget.displaySelectedCount,
         optionTemplate: widget.optionTemplate,
+        cancelButtonLabel: widget.cancelButtonLabel,
+        cancelButtonStyle: widget.cancelButtonStyle,
+        confirmButtonLabel: widget.confirmButtonLabel,
+        confirmButtonStyle: widget.confirmButtonStyle,
       ),
     );
 

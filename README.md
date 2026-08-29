@@ -113,6 +113,10 @@ AppSingleSelect<String>(
   optionTemplate: (context, label, value) => Row(
     children: [Text(flagEmoji(value)), const SizedBox(width: 12), Text(label)],
   ),
+  // The sheet's Cancel button — the only action button on a single-select
+  // sheet, since tapping an option confirms immediately:
+  cancelButtonLabel: 'Dismiss',
+  cancelButtonStyle: OutlinedButton.styleFrom(foregroundColor: Colors.indigo),
 );
 ```
 
@@ -134,6 +138,11 @@ AppMultiSelect<String>(
   optionTemplate: (context, label, value) => Row(
     children: [Icon(Icons.circle, size: 10, color: tagColor(value)), const SizedBox(width: 10), Text(label)],
   ),
+  // The sheet's Cancel / confirm (OK) buttons:
+  cancelButtonLabel: 'Dismiss',
+  cancelButtonStyle: FilledButton.styleFrom(backgroundColor: Colors.grey.shade200),
+  confirmButtonLabel: 'Apply',
+  confirmButtonStyle: FilledButton.styleFrom(backgroundColor: Colors.teal),
 );
 ```
 
@@ -165,6 +174,8 @@ AppMultiSelect<String>(
 | `inputLabelStyle` | `TextStyle?` | `null` | Overrides the field label's text style. Takes precedence over `AppSelectStyle.labelStyle`. |
 | `selectedInputTemplate` | `Widget Function(BuildContext, String label, T value)?` | `null` | Builds the trigger's selected-value display in place of the default `Text`. |
 | `optionTemplate` | `Widget Function(BuildContext, String label, T value)?` | `null` | Builds each row's content in the option sheet in place of the default `Text`. |
+| `cancelButtonLabel` | `String?` | `null` | Overrides the sheet's Cancel button label. Takes precedence over `AppSelectStyle.cancelLabel`. |
+| `cancelButtonStyle` | `ButtonStyle?` | `null` | Overrides the sheet's Cancel button style. |
 
 ## AppMultiSelect&lt;T&gt; properties
 
@@ -187,6 +198,10 @@ AppMultiSelect<String>(
 | `inputLabelStyle` | `TextStyle?` | `null` | Overrides the field label's text style. Takes precedence over `AppSelectStyle.labelStyle`. |
 | `selectedInputTemplate` | `Widget Function(BuildContext, String label, T value)?` | `null` | Builds each selected option's display, laid out in a `Wrap` in the trigger, in place of the default joined text. Falls back to the joined text once the count passes `maxSelectedLabel`. |
 | `optionTemplate` | `Widget Function(BuildContext, String label, T value)?` | `null` | Builds each row's content in the option sheet in place of the default `Text`. |
+| `cancelButtonLabel` | `String?` | `null` | Overrides the sheet's Cancel button label. Takes precedence over `AppSelectStyle.cancelLabel`. |
+| `cancelButtonStyle` | `ButtonStyle?` | `null` | Overrides the sheet's Cancel button style. |
+| `confirmButtonLabel` | `String?` | `null` | Overrides the sheet's confirm (OK) button label. Takes precedence over `AppSelectStyle.okLabel`. |
+| `confirmButtonStyle` | `ButtonStyle?` | `null` | Overrides the sheet's confirm (OK) button style. |
 
 ## SelectOption&lt;T&gt;
 

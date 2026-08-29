@@ -43,6 +43,8 @@ class SingleSelectSheet<T> extends StatefulWidget {
     this.onSearchChanged,
     this.noRecordWidget,
     this.optionTemplate,
+    this.cancelButtonLabel,
+    this.cancelButtonStyle,
   });
 
   /// Whether a Clear button sits beside Cancel while [initialValue] is set.
@@ -69,6 +71,13 @@ class SingleSelectSheet<T> extends StatefulWidget {
 
   /// Builds each row's content in place of the default label [Text].
   final SelectOptionBuilder<T>? optionTemplate;
+
+  /// Overrides the Cancel button's label. Takes precedence over
+  /// [AppSelectStyle.cancelLabel].
+  final String? cancelButtonLabel;
+
+  /// Overrides the Cancel button's style.
+  final ButtonStyle? cancelButtonStyle;
 
   @override
   State<SingleSelectSheet<T>> createState() => _SingleSelectSheetState<T>();
@@ -157,6 +166,8 @@ class _SingleSelectSheetState<T> extends State<SingleSelectSheet<T>> {
                     ? () => Navigator.of(context).pop(SingleSelectSheetResult<T>(null))
                     : null,
                 onCancel: () => Navigator.of(context).pop(),
+                cancelButtonLabel: widget.cancelButtonLabel,
+                cancelButtonStyle: widget.cancelButtonStyle,
               ),
               child: SingleSelectList<T>(
                 scrollController: scrollController,
@@ -181,7 +192,13 @@ class _SingleSelectSheetState<T> extends State<SingleSelectSheet<T>> {
 /// set. Confirming stays implicit (tap an option), so neither button commits
 /// a selection.
 class _SheetActions extends StatelessWidget {
-  const _SheetActions({required this.onCancel, required this.style, this.onClear});
+  const _SheetActions({
+    required this.onCancel,
+    required this.style,
+    this.onClear,
+    this.cancelButtonLabel,
+    this.cancelButtonStyle,
+  });
 
   /// Closes the sheet leaving the current selection untouched.
   final VoidCallback onCancel;
@@ -192,11 +209,22 @@ class _SheetActions extends StatelessWidget {
   /// Style overrides shared with the rest of the select widget.
   final AppSelectStyle style;
 
+  /// Overrides the Cancel button's label. Takes precedence over
+  /// [AppSelectStyle.cancelLabel].
+  final String? cancelButtonLabel;
+
+  /// Overrides the Cancel button's style.
+  final ButtonStyle? cancelButtonStyle;
+
   @override
   Widget build(BuildContext context) {
     final cancel = SizedBox(
       width: double.infinity,
-      child: FilledButton.tonal(onPressed: onCancel, child: Text(style.cancelLabel)),
+      child: FilledButton.tonal(
+        onPressed: onCancel,
+        style: cancelButtonStyle,
+        child: Text(cancelButtonLabel ?? style.cancelLabel),
+      ),
     );
 
     if (onClear == null) return cancel;

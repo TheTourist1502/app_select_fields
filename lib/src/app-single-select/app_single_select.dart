@@ -57,6 +57,8 @@ class AppSingleSelect<T> extends StatefulWidget {
     this.inputLabelStyle,
     this.selectedInputTemplate,
     this.optionTemplate,
+    this.cancelButtonLabel,
+    this.cancelButtonStyle,
     super.key,
   });
 
@@ -158,6 +160,13 @@ class AppSingleSelect<T> extends StatefulWidget {
   /// label [Text]. Called with that option's `label` and `value`.
   final SelectOptionBuilder<T>? optionTemplate;
 
+  /// Overrides the sheet's Cancel button label. Takes precedence over
+  /// [AppSelectStyle.cancelLabel].
+  final String? cancelButtonLabel;
+
+  /// Overrides the sheet's Cancel button style.
+  final ButtonStyle? cancelButtonStyle;
+
   @override
   State<AppSingleSelect<T>> createState() => _AppSingleSelectState<T>();
 }
@@ -239,6 +248,8 @@ class _AppSingleSelectState<T> extends State<AppSingleSelect<T>> {
         onSearchChanged: widget.onSearchChanged,
         noRecordWidget: widget.noRecordWidget,
         optionTemplate: widget.optionTemplate,
+        cancelButtonLabel: widget.cancelButtonLabel,
+        cancelButtonStyle: widget.cancelButtonStyle,
       ),
     );
 

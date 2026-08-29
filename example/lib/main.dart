@@ -152,6 +152,10 @@ class _ExampleHomePageState extends State<ExampleHomePage> {
                   Text(value, style: TextStyle(color: Colors.grey.shade500, fontSize: 12)),
                 ],
               ),
+              // Overrides the sheet's Cancel button (the only action button
+              // here, since tapping an option confirms immediately).
+              cancelButtonLabel: 'Dismiss',
+              cancelButtonStyle: OutlinedButton.styleFrom(foregroundColor: Colors.indigo),
             ),
             const SizedBox(height: 24),
             AppSingleSelect<int>(
@@ -202,6 +206,11 @@ class _ExampleHomePageState extends State<ExampleHomePage> {
                   Text(label),
                 ],
               ),
+              // Overrides the sheet's Cancel / confirm (OK) buttons.
+              cancelButtonLabel: 'Dismiss',
+              cancelButtonStyle: FilledButton.styleFrom(backgroundColor: Colors.grey.shade200, foregroundColor: Colors.black87),
+              confirmButtonLabel: 'Apply',
+              confirmButtonStyle: FilledButton.styleFrom(backgroundColor: Colors.teal),
             ),
           ],
         ),

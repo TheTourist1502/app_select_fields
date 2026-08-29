@@ -21,6 +21,10 @@ class MultiSelectSheet<T> extends StatefulWidget {
     this.noRecordWidget,
     this.displaySelectedCount = true,
     this.optionTemplate,
+    this.cancelButtonLabel,
+    this.cancelButtonStyle,
+    this.confirmButtonLabel,
+    this.confirmButtonStyle,
   });
 
   /// Options offered in the sheet.
@@ -41,6 +45,20 @@ class MultiSelectSheet<T> extends StatefulWidget {
 
   /// Builds each row's content in place of the default label [Text].
   final SelectOptionBuilder<T>? optionTemplate;
+
+  /// Overrides the Cancel button's label. Takes precedence over
+  /// [AppSelectStyle.cancelLabel].
+  final String? cancelButtonLabel;
+
+  /// Overrides the Cancel button's style.
+  final ButtonStyle? cancelButtonStyle;
+
+  /// Overrides the confirm (OK) button's label. Takes precedence over
+  /// [AppSelectStyle.okLabel].
+  final String? confirmButtonLabel;
+
+  /// Overrides the confirm (OK) button's style.
+  final ButtonStyle? confirmButtonStyle;
 
   @override
   State<MultiSelectSheet<T>> createState() => _MultiSelectSheetState<T>();
@@ -112,6 +130,10 @@ class _MultiSelectSheetState<T> extends State<MultiSelectSheet<T>> {
             style: widget.style,
             onCancel: () => Navigator.of(context).pop(),
             onConfirm: () => Navigator.of(context).pop(_selection.value.toList()),
+            cancelButtonLabel: widget.cancelButtonLabel,
+            cancelButtonStyle: widget.cancelButtonStyle,
+            confirmButtonLabel: widget.confirmButtonLabel,
+            confirmButtonStyle: widget.confirmButtonStyle,
           ),
           child: MultiSelectList<T>(
             scrollController: scrollController,
@@ -130,22 +152,52 @@ class _MultiSelectSheetState<T> extends State<MultiSelectSheet<T>> {
 
 /// Cancel / OK row at the bottom of the multi-select sheet.
 class _SheetActions extends StatelessWidget {
-  const _SheetActions({required this.onCancel, required this.onConfirm, required this.style});
+  const _SheetActions({
+    required this.onCancel,
+    required this.onConfirm,
+    required this.style,
+    this.cancelButtonLabel,
+    this.cancelButtonStyle,
+    this.confirmButtonLabel,
+    this.confirmButtonStyle,
+  });
 
   final VoidCallback onCancel;
   final VoidCallback onConfirm;
   final AppSelectStyle style;
+
+  /// Overrides the Cancel button's label. Takes precedence over
+  /// [AppSelectStyle.cancelLabel].
+  final String? cancelButtonLabel;
+
+  /// Overrides the Cancel button's style.
+  final ButtonStyle? cancelButtonStyle;
+
+  /// Overrides the confirm (OK) button's label. Takes precedence over
+  /// [AppSelectStyle.okLabel].
+  final String? confirmButtonLabel;
+
+  /// Overrides the confirm (OK) button's style.
+  final ButtonStyle? confirmButtonStyle;
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
         Expanded(
-          child: FilledButton.tonal(onPressed: onCancel, child: Text(style.cancelLabel)),
+          child: FilledButton.tonal(
+            onPressed: onCancel,
+            style: cancelButtonStyle,
+            child: Text(cancelButtonLabel ?? style.cancelLabel),
+          ),
         ),
         const SizedBox(width: kSelectSpaceMd),
         Expanded(
-          child: FilledButton(onPressed: onConfirm, child: Text(style.okLabel)),
+          child: FilledButton(
+            onPressed: onConfirm,
+            style: confirmButtonStyle,
+            child: Text(confirmButtonLabel ?? style.okLabel),
+          ),
         ),
       ],
     );
