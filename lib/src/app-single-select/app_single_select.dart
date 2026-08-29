@@ -56,9 +56,9 @@ class AppSingleSelect<T> extends StatefulWidget {
     this.inputValueStyle,
     this.hintStyle,
     this.inputLabelStyle,
+    this.cancelButtonStyle,
     this.optionTemplate,
     this.cancelButtonLabel,
-    this.cancelButtonStyle,
     super.key,
   });
 
