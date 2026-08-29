@@ -20,6 +20,7 @@ class MultiSelectList<T> extends StatelessWidget {
     required this.onToggle,
     required this.style,
     this.noRecordWidget,
+    this.optionTemplate,
     super.key,
   });
 
@@ -42,6 +43,9 @@ class MultiSelectList<T> extends StatelessWidget {
   /// centered "No Records Found !" message.
   final Widget? noRecordWidget;
 
+  /// Builds each row's content in place of the default label [Text].
+  final SelectOptionBuilder<T>? optionTemplate;
+
   @override
   Widget build(BuildContext context) {
     if (options.isEmpty) return noRecordWidget != null ? Center(child: noRecordWidget) : const NoRecordsFound();
@@ -58,6 +62,7 @@ class MultiSelectList<T> extends StatelessWidget {
           selection: selection,
           onToggle: onToggle,
           style: style,
+          optionTemplate: optionTemplate,
         );
       },
     );

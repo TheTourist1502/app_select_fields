@@ -42,6 +42,7 @@ class SingleSelectSheet<T> extends StatefulWidget {
     this.onLoadMore,
     this.onSearchChanged,
     this.noRecordWidget,
+    this.optionTemplate,
   });
 
   /// Whether a Clear button sits beside Cancel while [initialValue] is set.
@@ -65,6 +66,9 @@ class SingleSelectSheet<T> extends StatefulWidget {
   /// Shown instead of the list when there are no options. Defaults to a
   /// centered "No Records Found !" message.
   final Widget? noRecordWidget;
+
+  /// Builds each row's content in place of the default label [Text].
+  final SelectOptionBuilder<T>? optionTemplate;
 
   @override
   State<SingleSelectSheet<T>> createState() => _SingleSelectSheetState<T>();
@@ -163,6 +167,7 @@ class _SingleSelectSheetState<T> extends State<SingleSelectSheet<T>> {
                 onScrollNotification: _onScrollNotification,
                 style: widget.style,
                 noRecordWidget: widget.noRecordWidget,
+                optionTemplate: widget.optionTemplate,
               ),
             );
           },

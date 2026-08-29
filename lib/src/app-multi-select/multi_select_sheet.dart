@@ -19,6 +19,8 @@ class MultiSelectSheet<T> extends StatefulWidget {
     required this.style,
     super.key,
     this.noRecordWidget,
+    this.displaySelectedCount = true,
+    this.optionTemplate,
   });
 
   /// Options offered in the sheet.
@@ -33,6 +35,12 @@ class MultiSelectSheet<T> extends StatefulWidget {
   /// Shown instead of the list when there are no options. Defaults to a
   /// centered "No Records Found !" message.
   final Widget? noRecordWidget;
+
+  /// Whether the "N selected" summary chip shows above the option list.
+  final bool displaySelectedCount;
+
+  /// Builds each row's content in place of the default label [Text].
+  final SelectOptionBuilder<T>? optionTemplate;
 
   @override
   State<MultiSelectSheet<T>> createState() => _MultiSelectSheetState<T>();
@@ -93,11 +101,13 @@ class _MultiSelectSheetState<T> extends State<MultiSelectSheet<T>> {
           textController: _textController,
           onQueryChanged: (v) => setState(() => _query = v),
           style: widget.style,
-          headerExtra: MultiSelectSummaryChip<T>(
-            selection: _selection,
-            onClear: () => _selection.value = <T>{},
-            style: widget.style,
-          ),
+          headerExtra: widget.displaySelectedCount
+              ? MultiSelectSummaryChip<T>(
+                  selection: _selection,
+                  onClear: () => _selection.value = <T>{},
+                  style: widget.style,
+                )
+              : null,
           actions: _SheetActions(
             style: widget.style,
             onCancel: () => Navigator.of(context).pop(),
@@ -110,6 +120,7 @@ class _MultiSelectSheetState<T> extends State<MultiSelectSheet<T>> {
             onToggle: _toggle,
             style: widget.style,
             noRecordWidget: widget.noRecordWidget,
+            optionTemplate: widget.optionTemplate,
           ),
         );
       },

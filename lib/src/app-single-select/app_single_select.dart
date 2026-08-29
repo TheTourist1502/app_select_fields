@@ -51,6 +51,12 @@ class AppSingleSelect<T> extends StatefulWidget {
     this.displayLabel = true,
     this.style = const AppSelectStyle(),
     this.noRecordWidget,
+    this.inputDecorationStyle,
+    this.inputValueStyle,
+    this.hintStyle,
+    this.inputLabelStyle,
+    this.selectedInputTemplate,
+    this.optionTemplate,
     super.key,
   });
 
@@ -127,6 +133,30 @@ class AppSingleSelect<T> extends StatefulWidget {
   /// Shown instead of the list when [options] is empty. Defaults to a
   /// centered "No Records Found !" message.
   final Widget? noRecordWidget;
+
+  /// Customizes the trigger field's resolved [InputDecoration]. Called with
+  /// the package's default decoration; return a modified copy.
+  final InputDecorationBuilder? inputDecorationStyle;
+
+  /// Overrides the selected value's text style. Takes precedence over
+  /// [AppSelectStyle.textStyle].
+  final TextStyle? inputValueStyle;
+
+  /// Overrides the placeholder's text style. Takes precedence over
+  /// [AppSelectStyle.hintStyle].
+  final TextStyle? hintStyle;
+
+  /// Overrides the field label's text style. Takes precedence over
+  /// [AppSelectStyle.labelStyle].
+  final TextStyle? inputLabelStyle;
+
+  /// Builds the trigger field's selected-value display in place of the
+  /// default [Text]. Called with the selected option's `label` and `value`.
+  final SelectOptionBuilder<T>? selectedInputTemplate;
+
+  /// Builds each row's content in the option sheet in place of the default
+  /// label [Text]. Called with that option's `label` and `value`.
+  final SelectOptionBuilder<T>? optionTemplate;
 
   @override
   State<AppSingleSelect<T>> createState() => _AppSingleSelectState<T>();
@@ -208,6 +238,7 @@ class _AppSingleSelectState<T> extends State<AppSingleSelect<T>> {
         onLoadMore: widget.onLoadMore,
         onSearchChanged: widget.onSearchChanged,
         noRecordWidget: widget.noRecordWidget,
+        optionTemplate: widget.optionTemplate,
       ),
     );
 
@@ -230,7 +261,7 @@ class _AppSingleSelectState<T> extends State<AppSingleSelect<T>> {
           SelectFieldLabel(
             text: widget.label,
             enabled: isEnabled,
-            style: widget.style.labelStyle,
+            style: widget.inputLabelStyle ?? widget.style.labelStyle,
             required: widget.required,
           ),
           const SizedBox(height: kSelectSpaceSm),
@@ -242,14 +273,19 @@ class _AppSingleSelectState<T> extends State<AppSingleSelect<T>> {
             key: _fieldKey,
             initialValue: widget.value,
             validator: widget.validator,
-            builder: (field) => SingleSelectTriggerField(
+            builder: (field) => SingleSelectTriggerField<T>(
               enabled: isEnabled,
               loading: widget.loading,
               onTap: _openSheet,
+              value: widget.value,
               selectedLabel: _cachedLabel,
               hint: widget.hint,
               errorText: widget.errorText ?? field.errorText,
               style: widget.style,
+              inputDecorationStyle: widget.inputDecorationStyle,
+              inputValueStyle: widget.inputValueStyle,
+              hintStyle: widget.hintStyle,
+              selectedInputTemplate: widget.selectedInputTemplate,
             ),
           ),
         ),

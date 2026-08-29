@@ -3,13 +3,14 @@ import 'package:flutter/material.dart';
 import '../internal/field_error_text.dart';
 import '../internal/select_input_decoration.dart';
 import '../internal/select_sheet_toggle.dart';
+import '../select_option.dart';
 import '../select_style.dart';
 
 /// The tappable, decorated field that opens the single-select sheet.
 ///
 /// Shows the selected label or the hint; a separate widget so validator
 /// rebuilds don't touch the surrounding form layout.
-class SingleSelectTriggerField extends StatelessWidget {
+class SingleSelectTriggerField<T> extends StatelessWidget {
   /// Not part of the public API — constructed only by [AppSingleSelect].
   const SingleSelectTriggerField({
     required this.enabled,
@@ -17,9 +18,14 @@ class SingleSelectTriggerField extends StatelessWidget {
     required this.onTap,
     required this.style,
     super.key,
+    this.value,
     this.selectedLabel,
     this.hint,
     this.errorText,
+    this.inputDecorationStyle,
+    this.inputValueStyle,
+    this.hintStyle,
+    this.selectedInputTemplate,
   });
 
   /// Whether the field accepts interaction and renders in full colour.
@@ -32,6 +38,9 @@ class SingleSelectTriggerField extends StatelessWidget {
   /// drives the chevron back down.
   final Future<void> Function() onTap;
 
+  /// Currently selected value, passed to [selectedInputTemplate].
+  final T? value;
+
   /// Label of the current selection, or `null` when nothing is selected.
   final String? selectedLabel;
 
@@ -43,6 +52,20 @@ class SingleSelectTriggerField extends StatelessWidget {
 
   /// Style overrides shared with the rest of the select widget.
   final AppSelectStyle style;
+
+  /// Customizes the trigger's resolved [InputDecoration].
+  final InputDecorationBuilder? inputDecorationStyle;
+
+  /// Overrides the selected value's text style. Takes precedence over
+  /// [AppSelectStyle.textStyle].
+  final TextStyle? inputValueStyle;
+
+  /// Overrides the placeholder's text style. Takes precedence over
+  /// [AppSelectStyle.hintStyle].
+  final TextStyle? hintStyle;
+
+  /// Builds the selected value's display in place of the default [Text].
+  final SelectOptionBuilder<T>? selectedInputTemplate;
 
   @override
   Widget build(BuildContext context) {
@@ -57,26 +80,23 @@ class SingleSelectTriggerField extends StatelessWidget {
           builder: (context, expanded, handleTap) => GestureDetector(
             onTap: handleTap,
             child: InputDecorator(
-              decoration: appSelectInputDecoration(
-                context: context,
-                enabled: enabled,
-                loading: loading,
-                style: style,
-                errorText: errorText,
-                expanded: expanded,
-              ),
-              child: Text(
-                selectedLabel ?? hint ?? '',
-                style: selectedLabel != null
-                    // A caller-supplied colour applies only while enabled —
-                    // a disabled field always greys out.
-                    ? (style.textStyle ?? theme.textTheme.bodyMedium ?? const TextStyle()).copyWith(
-                        color: enabled ? (style.textStyle?.color ?? colors.onSurface) : theme.disabledColor,
-                      )
-                    : (style.hintStyle ?? theme.textTheme.bodyMedium ?? const TextStyle()).copyWith(
-                        color: colors.onSurfaceVariant,
-                      ),
-              ),
+              decoration: _resolveDecoration(context, expanded),
+              child: selectedLabel != null && value != null && selectedInputTemplate != null
+                  ? selectedInputTemplate!(context, selectedLabel!, value as T)
+                  : Text(
+                      selectedLabel ?? hint ?? '',
+                      style: selectedLabel != null
+                          // A caller-supplied colour applies only while enabled —
+                          // a disabled field always greys out.
+                          ? (inputValueStyle ?? style.textStyle ?? theme.textTheme.bodyMedium ?? const TextStyle())
+                                .copyWith(
+                                  color: enabled
+                                      ? (inputValueStyle?.color ?? style.textStyle?.color ?? colors.onSurface)
+                                      : theme.disabledColor,
+                                )
+                          : (hintStyle ?? style.hintStyle ?? theme.textTheme.bodyMedium ?? const TextStyle())
+                                .copyWith(color: colors.onSurfaceVariant),
+                    ),
             ),
           ),
         ),
@@ -85,5 +105,17 @@ class SingleSelectTriggerField extends StatelessWidget {
         if (errorText case final error?) FieldErrorText(message: error, excludeSemantics: true),
       ],
     );
+  }
+
+  InputDecoration _resolveDecoration(BuildContext context, bool expanded) {
+    final decoration = appSelectInputDecoration(
+      context: context,
+      enabled: enabled,
+      loading: loading,
+      style: style,
+      errorText: errorText,
+      expanded: expanded,
+    );
+    return inputDecorationStyle?.call(decoration) ?? decoration;
   }
 }

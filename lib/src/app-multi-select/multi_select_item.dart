@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../internal/spacing.dart';
+import '../select_option.dart';
 import '../select_style.dart';
 
 /// One checkbox row in the multi-select sheet.
@@ -17,6 +18,7 @@ class MultiSelectItem<T> extends StatefulWidget {
     required this.onToggle,
     required this.style,
     super.key,
+    this.optionTemplate,
   });
 
   /// Text shown for the option.
@@ -33,6 +35,9 @@ class MultiSelectItem<T> extends StatefulWidget {
 
   /// Style overrides shared with the rest of the select widget.
   final AppSelectStyle style;
+
+  /// Builds this row's content in place of the default label [Text].
+  final SelectOptionBuilder<T>? optionTemplate;
 
   @override
   State<MultiSelectItem<T>> createState() => _MultiSelectItemState<T>();
@@ -101,13 +106,15 @@ class _MultiSelectItemState<T> extends State<MultiSelectItem<T>> {
               ),
               const SizedBox(width: 14),
               Expanded(
-                child: Text(
-                  widget.label,
-                  style: (widget.style.textStyle ?? theme.textTheme.bodyMedium ?? const TextStyle()).copyWith(
-                    fontWeight: _selected ? FontWeight.w600 : FontWeight.w400,
-                    color: _selected ? colors.primary : colors.onSurface,
-                  ),
-                ),
+                child:
+                    widget.optionTemplate?.call(context, widget.label, widget.value) ??
+                    Text(
+                      widget.label,
+                      style: (widget.style.textStyle ?? theme.textTheme.bodyMedium ?? const TextStyle()).copyWith(
+                        fontWeight: _selected ? FontWeight.w600 : FontWeight.w400,
+                        color: _selected ? colors.primary : colors.onSurface,
+                      ),
+                    ),
               ),
             ],
           ),

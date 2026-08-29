@@ -27,6 +27,13 @@ class AppMultiSelect<T> extends StatefulWidget {
     this.validator,
     this.style = const AppSelectStyle(),
     this.noRecordWidget,
+    this.displaySelectedCount = true,
+    this.inputDecorationStyle,
+    this.inputValueStyle,
+    this.hintStyle,
+    this.inputLabelStyle,
+    this.selectedInputTemplate,
+    this.optionTemplate,
     super.key,
   });
 
@@ -61,6 +68,36 @@ class AppMultiSelect<T> extends StatefulWidget {
   /// centered "No Records Found !" message.
   final Widget? noRecordWidget;
 
+  /// Whether the "N selected" summary chip shows above the option list.
+  /// Defaults to `true`.
+  final bool displaySelectedCount;
+
+  /// Customizes the trigger field's resolved [InputDecoration]. Called with
+  /// the package's default decoration; return a modified copy.
+  final InputDecorationBuilder? inputDecorationStyle;
+
+  /// Overrides the selected values' text style. Takes precedence over
+  /// [AppSelectStyle.textStyle].
+  final TextStyle? inputValueStyle;
+
+  /// Overrides the placeholder's text style. Takes precedence over
+  /// [AppSelectStyle.hintStyle].
+  final TextStyle? hintStyle;
+
+  /// Overrides the field label's text style. Takes precedence over
+  /// [AppSelectStyle.labelStyle].
+  final TextStyle? inputLabelStyle;
+
+  /// Builds the trigger field's selected-value display in place of the
+  /// default [Text]. Called once per selected option with its `label` and
+  /// `value`, and laid out in a [Wrap]. Falls back to the default joined
+  /// text once the selection count passes [maxSelectedLabel].
+  final SelectOptionBuilder<T>? selectedInputTemplate;
+
+  /// Builds each row's content in the option sheet in place of the default
+  /// label [Text]. Called with that option's `label` and `value`.
+  final SelectOptionBuilder<T>? optionTemplate;
+
   @override
   State<AppMultiSelect<T>> createState() => _AppMultiSelectState<T>();
 }
@@ -74,10 +111,15 @@ class _AppMultiSelectState<T> extends State<AppMultiSelect<T>> {
   /// on every build. `null` means "render the N-selected label".
   String? _cachedDisplay = '';
 
+  /// Cached selected options backing [AppMultiSelect.selectedInputTemplate].
+  /// `null` under the same conditions as [_cachedDisplay].
+  List<SelectOption<T>>? _cachedSelectedOptions;
+
   @override
   void initState() {
     super.initState();
     _cachedDisplay = _computeDisplay();
+    _cachedSelectedOptions = _computeSelectedOptions();
   }
 
   @override
@@ -87,6 +129,7 @@ class _AppMultiSelectState<T> extends State<AppMultiSelect<T>> {
         oldWidget.options != widget.options ||
         oldWidget.maxSelectedLabel != widget.maxSelectedLabel) {
       _cachedDisplay = _computeDisplay();
+      _cachedSelectedOptions = _computeSelectedOptions();
       WidgetsBinding.instance.addPostFrameCallback((_) => _fieldKey.currentState?.didChange(widget.values));
     }
   }
@@ -99,6 +142,16 @@ class _AppMultiSelectState<T> extends State<AppMultiSelect<T>> {
     if (max != null && widget.values.length > max) return null;
     final valSet = Set<T>.from(widget.values);
     return widget.options.where((o) => valSet.contains(o.value)).map((o) => o.label).join(', ');
+  }
+
+  /// The selected [SelectOption]s in order, or `null` once the count passes
+  /// [AppMultiSelect.maxSelectedLabel] — same threshold as [_computeDisplay].
+  List<SelectOption<T>>? _computeSelectedOptions() {
+    if (widget.values.isEmpty) return const [];
+    final max = widget.maxSelectedLabel;
+    if (max != null && widget.values.length > max) return null;
+    final valSet = Set<T>.from(widget.values);
+    return widget.options.where((o) => valSet.contains(o.value)).toList();
   }
 
   /// Opens the picker sheet above the app chrome and reports the result.
@@ -122,6 +175,8 @@ class _AppMultiSelectState<T> extends State<AppMultiSelect<T>> {
         initialValues: List<T>.from(widget.values),
         style: widget.style,
         noRecordWidget: widget.noRecordWidget,
+        displaySelectedCount: widget.displaySelectedCount,
+        optionTemplate: widget.optionTemplate,
       ),
     );
 
@@ -137,7 +192,11 @@ class _AppMultiSelectState<T> extends State<AppMultiSelect<T>> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SelectFieldLabel(text: widget.label, enabled: widget.enabled, style: widget.style.labelStyle),
+        SelectFieldLabel(
+          text: widget.label,
+          enabled: widget.enabled,
+          style: widget.inputLabelStyle ?? widget.style.labelStyle,
+        ),
         const SizedBox(height: kSelectSpaceSm),
         // IgnorePointer blocks touch to the entire subtree when disabled.
         IgnorePointer(
@@ -146,13 +205,18 @@ class _AppMultiSelectState<T> extends State<AppMultiSelect<T>> {
             key: _fieldKey,
             initialValue: widget.values,
             validator: widget.validator,
-            builder: (field) => MultiSelectTriggerField(
+            builder: (field) => MultiSelectTriggerField<T>(
               enabled: widget.enabled,
               onTap: _openSheet,
               display: display,
+              selectedOptions: _cachedSelectedOptions,
               hint: widget.hint,
               errorText: field.errorText,
               style: widget.style,
+              inputDecorationStyle: widget.inputDecorationStyle,
+              inputValueStyle: widget.inputValueStyle,
+              hintStyle: widget.hintStyle,
+              selectedInputTemplate: widget.selectedInputTemplate,
             ),
           ),
         ),

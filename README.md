@@ -85,6 +85,58 @@ AppSingleSelect<String>(
 See `example/` for a runnable demo of both widgets, including a fake
 paginated "backend" for `AppSingleSelect` and a custom `AppSelectStyle`.
 
+### Custom decoration, styles & templates
+
+Every field on both widgets below is optional. `inputDecorationStyle` gets
+the package's fully-resolved `InputDecoration` to tweak or replace;
+`inputValueStyle`/`hintStyle`/`inputLabelStyle` override individual text
+styles (each takes precedence over the equivalent `AppSelectStyle` field);
+`selectedInputTemplate` and `optionTemplate` replace the default `Text` with
+a custom widget, both called with the option's `label` and `value`:
+
+```dart
+AppSingleSelect<String>(
+  label: 'Country',
+  options: _countries, // SelectOption<String>, value is a country code
+  value: selectedCountry,
+  onChanged: (value) => setState(() => selectedCountry = value),
+  inputLabelStyle: const TextStyle(fontWeight: FontWeight.bold, color: Colors.indigo),
+  hintStyle: const TextStyle(fontStyle: FontStyle.italic, color: Colors.grey),
+  inputValueStyle: const TextStyle(fontWeight: FontWeight.w600),
+  inputDecorationStyle: (decoration) => decoration.copyWith(prefixIcon: const Icon(Icons.public)),
+  // Trigger field's selected-value display:
+  selectedInputTemplate: (context, label, value) => Row(
+    mainAxisSize: MainAxisSize.min,
+    children: [Text(flagEmoji(value)), const SizedBox(width: 8), Text(label)],
+  ),
+  // Each row in the option sheet:
+  optionTemplate: (context, label, value) => Row(
+    children: [Text(flagEmoji(value)), const SizedBox(width: 12), Text(label)],
+  ),
+);
+```
+
+`AppMultiSelect` supports the same six properties, plus
+`displaySelectedCount` (default `true`) to hide the sheet's "N selected"
+summary chip. Its `selectedInputTemplate` is called once per selected
+option and the results are laid out in a `Wrap` in the trigger, in place of
+the default comma-joined text — falling back to that text once the
+selection count passes `maxSelectedLabel`:
+
+```dart
+AppMultiSelect<String>(
+  label: 'Tags',
+  options: _tags,
+  values: selectedTags,
+  onChanged: (values) => setState(() => selectedTags = values),
+  displaySelectedCount: false, // hide the "N selected" chip in the sheet
+  selectedInputTemplate: (context, label, value) => Chip(label: Text(label)), // one per selected tag
+  optionTemplate: (context, label, value) => Row(
+    children: [Icon(Icons.circle, size: 10, color: tagColor(value)), const SizedBox(width: 10), Text(label)],
+  ),
+);
+```
+
 ## AppSingleSelect&lt;T&gt; properties
 
 | Property | Type | Default | Description |
@@ -107,6 +159,12 @@ paginated "backend" for `AppSingleSelect` and a custom `AppSelectStyle`.
 | `displayLabel` | `bool` | `true` | Whether `label` renders above the field, e.g. when a surrounding layout already names it. |
 | `style` | `AppSelectStyle` | `AppSelectStyle()` | Visual/copy overrides — see below. |
 | `noRecordWidget` | `Widget?` | `null` | Shown centered in the sheet's list area when `options` is empty. Defaults to a "No Records Found !" message. |
+| `inputDecorationStyle` | `InputDecoration Function(InputDecoration)?` | `null` | Customizes the trigger's resolved `InputDecoration`. |
+| `inputValueStyle` | `TextStyle?` | `null` | Overrides the selected value's text style. Takes precedence over `AppSelectStyle.textStyle`. |
+| `hintStyle` | `TextStyle?` | `null` | Overrides the placeholder's text style. Takes precedence over `AppSelectStyle.hintStyle`. |
+| `inputLabelStyle` | `TextStyle?` | `null` | Overrides the field label's text style. Takes precedence over `AppSelectStyle.labelStyle`. |
+| `selectedInputTemplate` | `Widget Function(BuildContext, String label, T value)?` | `null` | Builds the trigger's selected-value display in place of the default `Text`. |
+| `optionTemplate` | `Widget Function(BuildContext, String label, T value)?` | `null` | Builds each row's content in the option sheet in place of the default `Text`. |
 
 ## AppMultiSelect&lt;T&gt; properties
 
@@ -122,6 +180,13 @@ paginated "backend" for `AppSingleSelect` and a custom `AppSelectStyle`.
 | `validator` | `String? Function(List<T>?)?` | `null` | Form validator run against the selected values. |
 | `style` | `AppSelectStyle` | `AppSelectStyle()` | Visual/copy overrides — see below. |
 | `noRecordWidget` | `Widget?` | `null` | Shown centered in the sheet's list area when `options` is empty. Defaults to a "No Records Found !" message. |
+| `displaySelectedCount` | `bool` | `true` | Whether the sheet's "N selected" summary chip shows above the option list. |
+| `inputDecorationStyle` | `InputDecoration Function(InputDecoration)?` | `null` | Customizes the trigger's resolved `InputDecoration`. |
+| `inputValueStyle` | `TextStyle?` | `null` | Overrides the selected values' text style. Takes precedence over `AppSelectStyle.textStyle`. |
+| `hintStyle` | `TextStyle?` | `null` | Overrides the placeholder's text style. Takes precedence over `AppSelectStyle.hintStyle`. |
+| `inputLabelStyle` | `TextStyle?` | `null` | Overrides the field label's text style. Takes precedence over `AppSelectStyle.labelStyle`. |
+| `selectedInputTemplate` | `Widget Function(BuildContext, String label, T value)?` | `null` | Builds each selected option's display, laid out in a `Wrap` in the trigger, in place of the default joined text. Falls back to the joined text once the count passes `maxSelectedLabel`. |
+| `optionTemplate` | `Widget Function(BuildContext, String label, T value)?` | `null` | Builds each row's content in the option sheet in place of the default `Text`. |
 
 ## SelectOption&lt;T&gt;
 

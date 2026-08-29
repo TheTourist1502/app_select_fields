@@ -21,6 +21,7 @@ class SingleSelectList<T> extends StatelessWidget {
     required this.onScrollNotification,
     required this.style,
     this.noRecordWidget,
+    this.optionTemplate,
     super.key,
   });
 
@@ -49,6 +50,9 @@ class SingleSelectList<T> extends StatelessWidget {
   /// centered "No Records Found !" message.
   final Widget? noRecordWidget;
 
+  /// Builds each row's content in place of the default label [Text].
+  final SelectOptionBuilder<T>? optionTemplate;
+
   @override
   Widget build(BuildContext context) {
     if (options.isEmpty) return noRecordWidget != null ? Center(child: noRecordWidget) : const NoRecordsFound();
@@ -64,11 +68,13 @@ class SingleSelectList<T> extends StatelessWidget {
         itemBuilder: (_, i) {
           if (i >= options.length) return const _LoadingFooter();
           final option = options[i];
-          return SingleSelectItem(
+          return SingleSelectItem<T>(
             label: option.label,
+            value: option.value,
             selected: option.value == selectedValue,
             onTap: () => onSelected(option.value),
             style: style,
+            optionTemplate: optionTemplate,
           );
         },
       ),

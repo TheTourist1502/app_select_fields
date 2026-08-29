@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 
+/// Customizes the trigger field's fully-resolved [InputDecoration] — called
+/// with the package's default decoration, return a modified copy (e.g. via
+/// `.copyWith`) or an entirely different one.
+typedef InputDecorationBuilder = InputDecoration Function(InputDecoration decoration);
+
 /// Optional visual/copy overrides for [AppSingleSelect] and [AppMultiSelect].
 ///
 /// Both widgets read colors and text styles from the ambient [Theme] by
