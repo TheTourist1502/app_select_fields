@@ -5,6 +5,8 @@
 [![pub likes](https://img.shields.io/pub/likes/app_select_fields)](https://pub.dev/packages/app_select_fields/score)
 [![CI](https://github.com/TheTourist1502/app_select_fields/actions/workflows/ci.yml/badge.svg)](https://github.com/TheTourist1502/app_select_fields/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![SDK: Flutter](https://img.shields.io/badge/SDK-Flutter-02569B?logo=flutter&logoColor=white)](https://flutter.dev)
+[![Platform](https://img.shields.io/badge/platform-Android%20%7C%20iOS-informational)](https://github.com/TheTourist1502/app_select_fields/actions/workflows/ci.yml)
 
 A Flutter **dropdown / select field** package: labelled, form-integrated
 single-select and multi-select inputs that open a draggable, root-level

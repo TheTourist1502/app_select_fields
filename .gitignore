@@ -3,6 +3,12 @@
 .packages
 build/
 pubspec.lock
+example/android/
+example/ios/
+example/build/
+example/linux/
+example/macos/
+example/windows/
 
 # IDE
 .idea/
