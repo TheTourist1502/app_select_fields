@@ -17,27 +17,27 @@ import 'multi_select_trigger_field.dart';
 class AppMultiSelect<T> extends StatefulWidget {
   /// Creates a multi-select field; the caller owns [values].
   const AppMultiSelect({
-    required this.label,
-    required this.options,
-    this.hint,
-    this.values = const [],
-    this.onChanged,
-    this.maxSelectedLabel,
-    this.enabled = true,
-    this.validator,
-    this.style = const AppSelectStyle(),
-    this.noRecordWidget,
-    this.displaySelectedCount = true,
-    this.inputDecorationStyle,
-    this.inputValueStyle,
-    this.hintStyle,
-    this.inputLabelStyle,
-    this.selectedInputTemplate,
-    this.optionTemplate,
-    this.cancelButtonLabel,
-    this.cancelButtonStyle,
-    this.confirmButtonLabel,
-    this.confirmButtonStyle,
+    required this.label, // caption shown above the field
+    required this.options, // choices offered in the sheet
+    this.hint, // placeholder shown while nothing is selected
+    this.values = const [], // caller-controlled currently selected values
+    this.onChanged, // fires with the confirmed values on OK
+    this.maxSelectedLabel, // switch to "N selected" past this count
+    this.enabled = true, // whether the field accepts interaction
+    this.validator, // Form validator for the selected values
+    this.style = const AppSelectStyle(), // visual/copy overrides bundle
+    this.noRecordWidget, // shown when options is empty
+    this.displaySelectedCount = true, // show the "N selected" summary chip
+    this.inputDecorationStyle, // customizes the resolved InputDecoration
+    this.inputValueStyle, // selected values' text style
+    this.hintStyle, // placeholder's text style
+    this.inputLabelStyle, // field label's text style
+    this.selectedInputTemplate, // custom widget per selected value
+    this.optionTemplate, // custom widget for each option row
+    this.cancelButtonLabel, // sheet's Cancel button label
+    this.cancelButtonStyle, // sheet's Cancel button style
+    this.confirmButtonLabel, // sheet's confirm (OK) button label
+    this.confirmButtonStyle, // sheet's confirm (OK) button style
     super.key,
   });
 

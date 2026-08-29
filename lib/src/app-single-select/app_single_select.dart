@@ -33,32 +33,32 @@ import 'single_select_trigger_field.dart';
 class AppSingleSelect<T> extends StatefulWidget {
   /// Creates a single-select field; see the class docs for lazy-loading use.
   const AppSingleSelect({
-    required this.label,
-    required this.options,
-    this.hint,
-    this.value,
-    this.onChanged,
-    this.enabled = true,
-    this.allowClear = false,
-    this.loading = false,
-    this.required = false,
-    this.errorText,
-    this.validator,
-    this.hasMore = false,
-    this.loadingMore = false,
-    this.onLoadMore,
-    this.onSearchChanged,
-    this.displayLabel = true,
-    this.selectedInputTemplate,
-    this.style = const AppSelectStyle(),
-    this.noRecordWidget,
-    this.inputDecorationStyle,
-    this.inputValueStyle,
-    this.hintStyle,
-    this.inputLabelStyle,
-    this.cancelButtonStyle,
-    this.optionTemplate,
-    this.cancelButtonLabel,
+    required this.label, // caption shown above the field
+    required this.options, // choices offered in the sheet
+    this.hint, // placeholder shown while nothing is selected
+    this.value, // caller-controlled currently selected value
+    this.onChanged, // fires with the newly picked value
+    this.enabled = true, // whether the field accepts interaction
+    this.allowClear = false, // show a Clear button beside Cancel
+    this.loading = false, // show a spinner and disable the field
+    this.required = false, // red * on the label — visual only
+    this.errorText, // caller-driven validation message
+    this.validator, // Form validator for the selected value
+    this.hasMore = false, // another server-side page exists
+    this.loadingMore = false, // a pagination request is in flight
+    this.onLoadMore, // fetch the next page of options
+    this.onSearchChanged, // debounced (~400ms) server-search callback
+    this.displayLabel = true, // whether label renders above the field
+    this.selectedInputTemplate, // custom selected-value widget
+    this.style = const AppSelectStyle(), // visual/copy overrides bundle
+    this.noRecordWidget, // shown when options is empty
+    this.inputDecorationStyle, // customizes the resolved InputDecoration
+    this.inputValueStyle, // selected value's text style
+    this.hintStyle, // placeholder's text style
+    this.inputLabelStyle, // field label's text style
+    this.cancelButtonStyle, // sheet's Cancel button style
+    this.optionTemplate, // custom widget for each option row
+    this.cancelButtonLabel, // sheet's Cancel button label
     super.key,
   });
 
