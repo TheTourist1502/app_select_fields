@@ -1,4 +1,4 @@
-## 0.0.2
+## 0.0.3 and 0.0.2 
 
 * Add `noRecordWidget` to both widgets for a custom empty-state message.
 * Add `displaySelectedCount` to `AppMultiSelect` (default `true`) to optionally hide the sheet's "N selected" summary chip.
