@@ -32,6 +32,7 @@ class AppSelectStyle {
     this.okLabel = 'OK',
     this.cancelButtonStyle,
     this.selectedCountLabel,
+    this.errorTextStyle,
   });
 
   /// Corner radius of the trigger field's border.
@@ -87,4 +88,8 @@ class AppSelectStyle {
   /// Resolves [selectedCountLabel], falling back to the English default.
   String countLabel(int count) =>
       selectedCountLabel?.call(count) ?? '$count selected';
+
+  /// Overrides the validation message drawn under the trigger field.
+  /// Defaults to a small `Theme.of(context).colorScheme.error` caption.
+  final TextStyle? errorTextStyle;
 }

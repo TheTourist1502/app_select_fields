@@ -6,7 +6,7 @@ import 'spacing.dart';
 /// with the field's left edge rather than inset under the input text.
 class FieldErrorText extends StatelessWidget {
   /// Creates a [FieldErrorText].
-  const FieldErrorText({required this.message, super.key, this.excludeSemantics = false});
+  const FieldErrorText({required this.message, super.key, this.excludeSemantics = false, this.style});
 
   /// The message to show.
   final String message;
@@ -15,13 +15,19 @@ class FieldErrorText extends StatelessWidget {
   /// field's own `errorText` already announces it.
   final bool excludeSemantics;
 
+  /// Overrides the message's text style. Defaults to a small caption in
+  /// `Theme.of(context).colorScheme.error`.
+  final TextStyle? style;
+
   @override
   Widget build(BuildContext context) {
     final text = Padding(
       padding: const EdgeInsets.only(top: kSelectSpaceXs),
       child: Text(
         message,
-        style: TextStyle(fontSize: 11, height: 13 / 11, color: Theme.of(context).colorScheme.error),
+        style:
+            style ??
+            TextStyle(fontSize: 11, height: 13 / 11, color: Theme.of(context).colorScheme.error),
       ),
     );
 

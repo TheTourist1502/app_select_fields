@@ -1,3 +1,11 @@
+## 0.0.4
+
+* Fix `AppSingleSelect` showing the plain hint (instead of a visible value) when a pre-set `value` isn't in the currently loaded `options` page — e.g. an edit form backed by lazy pagination whose matching page hasn't arrived yet.
+* Add `errorText` to `AppMultiSelect` to match `AppSingleSelect`, letting callers show a validation message without a `Form`/`validator`.
+* Document that `options` (and `values` on `AppMultiSelect`) must be a new list instance on change, not the same list mutated in place, since cached display state only recomputes on an identity check.
+* Fix a `.gitignore` typo (`example/andriod/` → `example/android/`) that left the real Android platform folder untracked-but-not-ignored.
+* Add `errorTextStyle` to both widgets and to `AppSelectStyle`, to override the validation message's text style — the widget-level one wins when both are set.
+
 ## 0.0.3 and 0.0.2 
 
 * Add `noRecordWidget` to both widgets for a custom empty-state message.

@@ -25,6 +25,7 @@ class SingleSelectTriggerField<T> extends StatelessWidget {
     this.inputDecorationStyle,
     this.inputValueStyle,
     this.hintStyle,
+    this.errorTextStyle,
     this.selectedInputTemplate,
   });
 
@@ -64,6 +65,10 @@ class SingleSelectTriggerField<T> extends StatelessWidget {
   /// [AppSelectStyle.hintStyle].
   final TextStyle? hintStyle;
 
+  /// Overrides the validation message's text style. Takes precedence over
+  /// [AppSelectStyle.errorTextStyle].
+  final TextStyle? errorTextStyle;
+
   /// Builds the selected value's display in place of the default [Text].
   final SelectOptionBuilder<T>? selectedInputTemplate;
 
@@ -102,7 +107,12 @@ class SingleSelectTriggerField<T> extends StatelessWidget {
         ),
         // Drawn outside the decoration so it starts at the field's left edge
         // rather than at the content padding. See [FieldErrorText].
-        if (errorText case final error?) FieldErrorText(message: error, excludeSemantics: true),
+        if (errorText case final error?)
+          FieldErrorText(
+            message: error,
+            excludeSemantics: true,
+            style: errorTextStyle ?? style.errorTextStyle,
+          ),
       ],
     );
   }

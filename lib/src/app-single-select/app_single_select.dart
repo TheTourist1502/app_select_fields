@@ -56,6 +56,7 @@ class AppSingleSelect<T> extends StatefulWidget {
     this.inputValueStyle, // selected value's text style
     this.hintStyle, // placeholder's text style
     this.inputLabelStyle, // field label's text style
+    this.errorTextStyle, // validation message's text style
     this.cancelButtonStyle, // sheet's Cancel button style
     this.optionTemplate, // custom widget for each option row
     this.cancelButtonLabel, // sheet's Cancel button label
@@ -66,6 +67,10 @@ class AppSingleSelect<T> extends StatefulWidget {
   final String label;
 
   /// Options offered in the sheet.
+  ///
+  /// Pass a new list instance (not the same list mutated in place) whenever
+  /// its contents change — the cached selected-label only recomputes when
+  /// this fails a `==` (identity) check.
   final List<SelectOption<T>> options;
 
   /// Placeholder shown while nothing is selected.
@@ -152,6 +157,10 @@ class AppSingleSelect<T> extends StatefulWidget {
   /// [AppSelectStyle.inputLabelStyle].
   final TextStyle? inputLabelStyle;
 
+  /// Overrides the validation message's text style. Takes precedence over
+  /// [AppSelectStyle.errorTextStyle].
+  final TextStyle? errorTextStyle;
+
   /// Builds the trigger field's selected-value display in place of the
   /// default [Text]. Called with the selected option's `label` and `value`.
   final SelectOptionBuilder<T>? selectedInputTemplate;
@@ -226,10 +235,14 @@ class _AppSingleSelectState<T> extends State<AppSingleSelect<T>> {
 
   String? _computeLabel() {
     if (widget.value == null) return null;
+    // A value that isn't in the currently loaded options page (e.g. a
+    // pre-filled edit form backed by lazy pagination) still needs a visible,
+    // non-hint label rather than silently looking like nothing is selected.
     return widget.options
-        .where((o) => o.value == widget.value)
-        .firstOrNull
-        ?.label;
+            .where((o) => o.value == widget.value)
+            .firstOrNull
+            ?.label ??
+        widget.value.toString();
   }
 
   /// Opens the picker sheet above the app chrome and reports the result.
@@ -305,6 +318,7 @@ class _AppSingleSelectState<T> extends State<AppSingleSelect<T>> {
               inputDecorationStyle: widget.inputDecorationStyle,
               inputValueStyle: widget.inputValueStyle,
               hintStyle: widget.hintStyle,
+              errorTextStyle: widget.errorTextStyle,
               selectedInputTemplate: widget.selectedInputTemplate,
             ),
           ),

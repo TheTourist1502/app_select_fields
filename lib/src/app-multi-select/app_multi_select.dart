@@ -24,6 +24,7 @@ class AppMultiSelect<T> extends StatefulWidget {
     this.onChanged, // fires with the confirmed values on OK
     this.maxSelectedLabel, // switch to "N selected" past this count
     this.enabled = true, // whether the field accepts interaction
+    this.errorText, // caller-driven validation message
     this.validator, // Form validator for the selected values
     this.style = const AppSelectStyle(), // visual/copy overrides bundle
     this.noRecordWidget, // shown when options is empty
@@ -32,6 +33,7 @@ class AppMultiSelect<T> extends StatefulWidget {
     this.inputValueStyle, // selected values' text style
     this.hintStyle, // placeholder's text style
     this.inputLabelStyle, // field label's text style
+    this.errorTextStyle, // validation message's text style
     this.selectedInputTemplate, // custom widget per selected value
     this.optionTemplate, // custom widget for each option row
     this.cancelButtonLabel, // sheet's Cancel button label
@@ -51,6 +53,10 @@ class AppMultiSelect<T> extends StatefulWidget {
   final String? hint;
 
   /// Currently selected values; the field is fully controlled by the caller.
+  ///
+  /// Pass a new list instance (not the same list mutated in place) whenever
+  /// its contents change — cached display state only recomputes when this
+  /// (or [options]) fails a `==` (identity) check.
   final List<T> values;
 
   /// Called with the confirmed values when the sheet closes.
@@ -61,6 +67,10 @@ class AppMultiSelect<T> extends StatefulWidget {
 
   /// Whether the field accepts interaction.
   final bool enabled;
+
+  /// Caller-driven validation message shown under the trigger field. Takes
+  /// precedence over anything [validator] produces.
+  final String? errorText;
 
   /// Form validator run against the selected values.
   final String? Function(List<T>?)? validator;
@@ -91,6 +101,10 @@ class AppMultiSelect<T> extends StatefulWidget {
   /// Overrides the field label's text style. Takes precedence over
   /// [AppSelectStyle.inputLabelStyle].
   final TextStyle? inputLabelStyle;
+
+  /// Overrides the validation message's text style. Takes precedence over
+  /// [AppSelectStyle.errorTextStyle].
+  final TextStyle? errorTextStyle;
 
   /// Builds the trigger field's selected-value display in place of the
   /// default [Text]. Called once per selected option with its `label` and
@@ -233,11 +247,12 @@ class _AppMultiSelectState<T> extends State<AppMultiSelect<T>> {
               display: display,
               selectedOptions: _cachedSelectedOptions,
               hint: widget.hint,
-              errorText: field.errorText,
+              errorText: widget.errorText ?? field.errorText,
               style: widget.style,
               inputDecorationStyle: widget.inputDecorationStyle,
               inputValueStyle: widget.inputValueStyle,
               hintStyle: widget.hintStyle,
+              errorTextStyle: widget.errorTextStyle,
               selectedInputTemplate: widget.selectedInputTemplate,
             ),
           ),

@@ -1,9 +1,9 @@
 name: app_select_fields
 description: >-
-  Material 3 single-select and multi-select form fields for Flutter.
-  Opens a draggable bottom sheet with built-in search and lazy
-  pagination — themeable, form-integrated, no extra dependencies.
-version: 0.0.3
+  Material 3 single- and multi-select form fields for Flutter. Opens a
+  draggable bottom sheet with search and lazy pagination — themeable,
+  form-integrated, no extra dependencies.
+version: 0.0.4
 homepage: https://github.com/TheTourist1502/app_select_fields
 repository: https://github.com/TheTourist1502/app_select_fields
 issue_tracker: https://github.com/TheTourist1502/app_select_fields/issues

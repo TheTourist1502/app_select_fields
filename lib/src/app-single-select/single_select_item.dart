@@ -44,39 +44,50 @@ class SingleSelectItem<T> extends StatelessWidget {
     final colors = theme.colorScheme;
     final reduceMotion = MediaQuery.maybeOf(context)?.disableAnimations ?? false;
 
-    return Material(
+    final duration = reduceMotion ? Duration.zero : style.checkAnimationDuration;
+    const curve = Curves.easeOutCubic;
+
+    return AnimatedContainer(
+      duration: duration,
+      curve: curve,
       color: selected ? colors.primary.withValues(alpha: 0.08) : Colors.transparent,
-      child: InkWell(
-        onTap: onTap,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: kSelectSpaceMd, vertical: 15),
-          child: Row(
-            children: [
-              AnimatedContainer(
-                duration: reduceMotion ? Duration.zero : style.checkAnimationDuration,
-                width: 22,
-                height: 22,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                    color: selected ? colors.primary : colors.outline,
-                    width: selected ? 7 : 2,
+      child: Material(
+        type: MaterialType.transparency,
+        child: InkWell(
+          onTap: onTap,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: kSelectSpaceMd, vertical: 15),
+            child: Row(
+              children: [
+                AnimatedContainer(
+                  duration: duration,
+                  curve: curve,
+                  width: 22,
+                  height: 22,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: selected ? colors.primary : colors.outline,
+                      width: selected ? 7 : 2,
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(width: 14),
-              Expanded(
-                child:
-                    optionTemplate?.call(context, label, value) ??
-                    Text(
-                      label,
-                      style: (style.inputValueStyle ?? theme.textTheme.bodyMedium ?? const TextStyle()).copyWith(
-                        fontWeight: selected ? FontWeight.w600 : FontWeight.w400,
-                        color: selected ? colors.primary : colors.onSurface,
+                const SizedBox(width: 14),
+                Expanded(
+                  child:
+                      optionTemplate?.call(context, label, value) ??
+                      AnimatedDefaultTextStyle(
+                        duration: duration,
+                        curve: curve,
+                        style: (style.inputValueStyle ?? theme.textTheme.bodyMedium ?? const TextStyle()).copyWith(
+                          fontWeight: selected ? FontWeight.w600 : FontWeight.w400,
+                          color: selected ? colors.primary : colors.onSurface,
+                        ),
+                        child: Text(label),
                       ),
-                    ),
-              ),
-            ],
+                ),
+              ],
+            ),
           ),
         ),
       ),

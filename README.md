@@ -174,6 +174,7 @@ AppMultiSelect<String>(
 | `inputValueStyle` | `TextStyle?` | `null` | Overrides the selected value's text style. Takes precedence over `AppSelectStyle.inputValueStyle`. |
 | `hintStyle` | `TextStyle?` | `null` | Overrides the placeholder's text style. Takes precedence over `AppSelectStyle.hintStyle`. |
 | `inputLabelStyle` | `TextStyle?` | `null` | Overrides the field label's text style. Takes precedence over `AppSelectStyle.inputLabelStyle`. |
+| `errorTextStyle` | `TextStyle?` | `null` | Overrides the validation message's text style. Takes precedence over `AppSelectStyle.errorTextStyle`. |
 | `selectedInputTemplate` | `Widget Function(BuildContext, String label, T value)?` | `null` | Builds the trigger's selected-value display in place of the default `Text`. |
 | `optionTemplate` | `Widget Function(BuildContext, String label, T value)?` | `null` | Builds each row's content in the option sheet in place of the default `Text`. |
 | `cancelButtonLabel` | `String?` | `null` | Overrides the sheet's Cancel button label. Takes precedence over `AppSelectStyle.cancelLabel`. |
@@ -190,6 +191,7 @@ AppMultiSelect<String>(
 | `onChanged` | `ValueChanged<List<T>>?` | `null` | Called with the confirmed values when the sheet's OK button is tapped. |
 | `maxSelectedLabel` | `int?` | `null` | Once the selected count exceeds this, the trigger shows "N selected" instead of the joined labels. |
 | `enabled` | `bool` | `true` | Whether the field accepts interaction. |
+| `errorText` | `String?` | `null` | Caller-driven validation message; takes precedence over `validator`. |
 | `validator` | `String? Function(List<T>?)?` | `null` | Form validator run against the selected values. |
 | `style` | `AppSelectStyle` | `AppSelectStyle()` | Visual/copy overrides — see below. |
 | `noRecordWidget` | `Widget?` | `null` | Shown centered in the sheet's list area when `options` is empty. Defaults to a "No Records Found !" message. |
@@ -198,6 +200,7 @@ AppMultiSelect<String>(
 | `inputValueStyle` | `TextStyle?` | `null` | Overrides the selected values' text style. Takes precedence over `AppSelectStyle.inputValueStyle`. |
 | `hintStyle` | `TextStyle?` | `null` | Overrides the placeholder's text style. Takes precedence over `AppSelectStyle.hintStyle`. |
 | `inputLabelStyle` | `TextStyle?` | `null` | Overrides the field label's text style. Takes precedence over `AppSelectStyle.inputLabelStyle`. |
+| `errorTextStyle` | `TextStyle?` | `null` | Overrides the validation message's text style. Takes precedence over `AppSelectStyle.errorTextStyle`. |
 | `selectedInputTemplate` | `Widget Function(BuildContext, String label, T value)?` | `null` | Builds each selected option's display, laid out in a `Wrap` in the trigger, in place of the default joined text. Falls back to the joined text once the count passes `maxSelectedLabel`. |
 | `optionTemplate` | `Widget Function(BuildContext, String label, T value)?` | `null` | Builds each row's content in the option sheet in place of the default `Text`. |
 | `cancelButtonLabel` | `String?` | `null` | Overrides the sheet's Cancel button label. Takes precedence over `AppSelectStyle.cancelLabel`. |
@@ -232,9 +235,10 @@ Every field is optional and falls back to a Material 3 default or an English str
 | `okLabel` | `String` | `'OK'` | Label of the button that confirms a multi-select's choices. |
 | `cancelButtonStyle` | `ButtonStyle?` | `null` | Style of the Cancel button. Overridden by the widget's own `cancelButtonStyle`. |
 | `selectedCountLabel` | `String Function(int)?` | `'$count selected'` | Builds the "N selected" summary text. |
+| `errorTextStyle` | `TextStyle?` | small `colorScheme.error` caption | Overrides the validation message's text style. Overridden by the widget's own `errorTextStyle`. |
 
 Every field the widgets also expose directly (`inputLabelStyle`, `hintStyle`,
-`inputValueStyle`, `inputDecorationStyle`, `cancelButtonStyle`) can be set on
+`inputValueStyle`, `inputDecorationStyle`, `cancelButtonStyle`, `errorTextStyle`) can be set on
 either the widget or `style` — the widget-level one wins when both are set,
 so `style` is a good place for values shared across many fields while the
 widget-level params stay for one-off overrides:

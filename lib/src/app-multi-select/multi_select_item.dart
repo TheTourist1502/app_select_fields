@@ -82,41 +82,58 @@ class _MultiSelectItemState<T> extends State<MultiSelectItem<T>> {
     final colors = theme.colorScheme;
     final reduceMotion = MediaQuery.maybeOf(context)?.disableAnimations ?? false;
 
-    return Material(
+    final duration = reduceMotion ? Duration.zero : widget.style.checkAnimationDuration;
+    const curve = Curves.easeOutCubic;
+
+    return AnimatedContainer(
+      duration: duration,
+      curve: curve,
       color: _selected ? colors.primary.withValues(alpha: 0.07) : Colors.transparent,
-      child: InkWell(
-        onTap: () => widget.onToggle(widget.value),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: kSelectSpaceMd, vertical: kSelectSpaceSm + 4),
-          child: Row(
-            children: [
-              AnimatedContainer(
-                duration: reduceMotion ? Duration.zero : widget.style.checkAnimationDuration,
-                width: 22,
-                height: 22,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(6),
-                  color: _selected ? colors.primary : Colors.transparent,
-                  border: Border.all(
-                    color: _selected ? colors.primary : colors.outline,
-                    width: _selected ? 0 : 1.8,
+      child: Material(
+        type: MaterialType.transparency,
+        child: InkWell(
+          onTap: () => widget.onToggle(widget.value),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: kSelectSpaceMd, vertical: kSelectSpaceSm + 4),
+            child: Row(
+              children: [
+                AnimatedContainer(
+                  duration: duration,
+                  curve: curve,
+                  width: 22,
+                  height: 22,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(6),
+                    color: _selected ? colors.primary : Colors.transparent,
+                    border: Border.all(
+                      color: _selected ? colors.primary : colors.outline,
+                      width: _selected ? 0 : 1.8,
+                    ),
+                  ),
+                  child: AnimatedScale(
+                    duration: duration,
+                    curve: reduceMotion ? curve : Curves.easeOutBack,
+                    scale: _selected ? 1 : 0,
+                    child: Icon(Icons.check, size: 15, color: colors.onPrimary),
                   ),
                 ),
-                child: _selected ? Icon(Icons.check, size: 15, color: colors.onPrimary) : null,
-              ),
-              const SizedBox(width: 14),
-              Expanded(
-                child:
-                    widget.optionTemplate?.call(context, widget.label, widget.value) ??
-                    Text(
-                      widget.label,
-                      style: (widget.style.inputValueStyle ?? theme.textTheme.bodyMedium ?? const TextStyle()).copyWith(
-                        fontWeight: _selected ? FontWeight.w600 : FontWeight.w400,
-                        color: _selected ? colors.primary : colors.onSurface,
+                const SizedBox(width: 14),
+                Expanded(
+                  child:
+                      widget.optionTemplate?.call(context, widget.label, widget.value) ??
+                      AnimatedDefaultTextStyle(
+                        duration: duration,
+                        curve: curve,
+                        style: (widget.style.inputValueStyle ?? theme.textTheme.bodyMedium ?? const TextStyle())
+                            .copyWith(
+                              fontWeight: _selected ? FontWeight.w600 : FontWeight.w400,
+                              color: _selected ? colors.primary : colors.onSurface,
+                            ),
+                        child: Text(widget.label),
                       ),
-                    ),
-              ),
-            ],
+                ),
+              ],
+            ),
           ),
         ),
       ),

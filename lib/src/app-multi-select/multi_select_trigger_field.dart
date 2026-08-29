@@ -24,6 +24,7 @@ class MultiSelectTriggerField<T> extends StatelessWidget {
     this.inputDecorationStyle,
     this.inputValueStyle,
     this.hintStyle,
+    this.errorTextStyle,
     this.selectedInputTemplate,
   });
 
@@ -61,6 +62,10 @@ class MultiSelectTriggerField<T> extends StatelessWidget {
   /// Overrides the placeholder's text style. Takes precedence over
   /// [AppSelectStyle.hintStyle].
   final TextStyle? hintStyle;
+
+  /// Overrides the validation message's text style. Takes precedence over
+  /// [AppSelectStyle.errorTextStyle].
+  final TextStyle? errorTextStyle;
 
   /// Builds each selected option's display, laid out in a [Wrap], in place
   /// of the default joined-label [Text].
@@ -104,7 +109,12 @@ class MultiSelectTriggerField<T> extends StatelessWidget {
         ),
         // Drawn outside the decoration so it starts at the field's left edge
         // rather than at the content padding. See [FieldErrorText].
-        if (errorText case final error?) FieldErrorText(message: error, excludeSemantics: true),
+        if (errorText case final error?)
+          FieldErrorText(
+            message: error,
+            excludeSemantics: true,
+            style: errorTextStyle ?? style.errorTextStyle,
+          ),
       ],
     );
   }
