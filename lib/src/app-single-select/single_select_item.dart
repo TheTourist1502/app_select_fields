@@ -70,7 +70,7 @@ class SingleSelectItem<T> extends StatelessWidget {
                     optionTemplate?.call(context, label, value) ??
                     Text(
                       label,
-                      style: (style.textStyle ?? theme.textTheme.bodyMedium ?? const TextStyle()).copyWith(
+                      style: (style.inputValueStyle ?? theme.textTheme.bodyMedium ?? const TextStyle()).copyWith(
                         fontWeight: selected ? FontWeight.w600 : FontWeight.w400,
                         color: selected ? colors.primary : colors.onSurface,
                       ),

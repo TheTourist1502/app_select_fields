@@ -110,7 +110,7 @@ class _MultiSelectItemState<T> extends State<MultiSelectItem<T>> {
                     widget.optionTemplate?.call(context, widget.label, widget.value) ??
                     Text(
                       widget.label,
-                      style: (widget.style.textStyle ?? theme.textTheme.bodyMedium ?? const TextStyle()).copyWith(
+                      style: (widget.style.inputValueStyle ?? theme.textTheme.bodyMedium ?? const TextStyle()).copyWith(
                         fontWeight: _selected ? FontWeight.w600 : FontWeight.w400,
                         color: _selected ? colors.primary : colors.onSurface,
                       ),

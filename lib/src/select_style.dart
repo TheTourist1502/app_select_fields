@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 /// Customizes the trigger field's fully-resolved [InputDecoration] — called
 /// with the package's default decoration, return a modified copy (e.g. via
 /// `.copyWith`) or an entirely different one.
-typedef InputDecorationBuilder = InputDecoration Function(InputDecoration decoration);
+typedef InputDecorationBuilder =
+    InputDecoration Function(InputDecoration decoration);
 
 /// Optional visual/copy overrides for [AppSingleSelect] and [AppMultiSelect].
 ///
@@ -19,15 +20,17 @@ class AppSelectStyle {
   const AppSelectStyle({
     this.borderRadius = 12,
     this.sheetBorderRadius = 20,
-    this.chevronAnimationDuration = const Duration(milliseconds: 150),
-    this.checkAnimationDuration = const Duration(milliseconds: 180),
-    this.labelStyle,
+    this.chevronAnimationDuration = const Duration(milliseconds: 250),
+    this.checkAnimationDuration = const Duration(milliseconds: 250),
+    this.inputLabelStyle,
     this.hintStyle,
-    this.textStyle,
+    this.inputValueStyle,
+    this.inputDecorationStyle,
     this.searchHint = 'Search',
     this.cancelLabel = 'Cancel',
     this.clearLabel = 'Clear',
     this.okLabel = 'OK',
+    this.cancelButtonStyle,
     this.selectedCountLabel,
   });
 
@@ -47,7 +50,7 @@ class AppSelectStyle {
 
   /// Overrides the caption above the field. Defaults to
   /// `Theme.of(context).textTheme.labelMedium`.
-  final TextStyle? labelStyle;
+  final TextStyle? inputLabelStyle;
 
   /// Overrides the placeholder shown while nothing is selected. Defaults to
   /// `Theme.of(context).textTheme.bodyMedium`.
@@ -55,7 +58,11 @@ class AppSelectStyle {
 
   /// Overrides the selected value's text style. Defaults to
   /// `Theme.of(context).textTheme.bodyMedium`.
-  final TextStyle? textStyle;
+  final TextStyle? inputValueStyle;
+
+  /// Customizes the trigger field's fully-resolved [InputDecoration]. Called
+  /// with the package's default decoration; return a modified copy.
+  final InputDecorationBuilder? inputDecorationStyle;
 
   /// Placeholder text for the sheet's search field.
   final String searchHint;
@@ -69,11 +76,15 @@ class AppSelectStyle {
   /// Label of the button that confirms a multi-select's choices.
   final String okLabel;
 
+  /// Style of the button that closes the sheet without changing anything.
+  final ButtonStyle? cancelButtonStyle;
+
   /// Builds the "N selected" summary shown once a multi-select's count
   /// exceeds its `maxSelectedLabel`, or the header chip's caption. Defaults
   /// to `'$count selected'`.
   final String Function(int count)? selectedCountLabel;
 
   /// Resolves [selectedCountLabel], falling back to the English default.
-  String countLabel(int count) => selectedCountLabel?.call(count) ?? '$count selected';
+  String countLabel(int count) =>
+      selectedCountLabel?.call(count) ?? '$count selected';
 }

@@ -55,7 +55,7 @@ class MultiSelectTriggerField<T> extends StatelessWidget {
   final InputDecorationBuilder? inputDecorationStyle;
 
   /// Overrides the selected values' text style. Takes precedence over
-  /// [AppSelectStyle.textStyle].
+  /// [AppSelectStyle.inputValueStyle].
   final TextStyle? inputValueStyle;
 
   /// Overrides the placeholder's text style. Takes precedence over
@@ -93,7 +93,7 @@ class MultiSelectTriggerField<T> extends StatelessWidget {
                   : Text(
                       hasValue ? display : (hint ?? ''),
                       style: hasValue
-                          ? (inputValueStyle ?? style.textStyle ?? theme.textTheme.bodyMedium ?? const TextStyle())
+                          ? (inputValueStyle ?? style.inputValueStyle ?? theme.textTheme.bodyMedium ?? const TextStyle())
                                 .copyWith(color: enabled ? colors.onSurface : theme.disabledColor)
                           : (hintStyle ?? style.hintStyle ?? theme.textTheme.bodyMedium ?? const TextStyle())
                                 .copyWith(color: colors.onSurfaceVariant),
@@ -117,6 +117,6 @@ class MultiSelectTriggerField<T> extends StatelessWidget {
       errorText: errorText,
       expanded: expanded,
     );
-    return inputDecorationStyle?.call(decoration) ?? decoration;
+    return (inputDecorationStyle ?? style.inputDecorationStyle)?.call(decoration) ?? decoration;
   }
 }

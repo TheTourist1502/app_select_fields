@@ -49,13 +49,13 @@ class AppSingleSelect<T> extends StatefulWidget {
     this.onLoadMore,
     this.onSearchChanged,
     this.displayLabel = true,
+    this.selectedInputTemplate,
     this.style = const AppSelectStyle(),
     this.noRecordWidget,
     this.inputDecorationStyle,
     this.inputValueStyle,
     this.hintStyle,
     this.inputLabelStyle,
-    this.selectedInputTemplate,
     this.optionTemplate,
     this.cancelButtonLabel,
     this.cancelButtonStyle,
@@ -141,7 +141,7 @@ class AppSingleSelect<T> extends StatefulWidget {
   final InputDecorationBuilder? inputDecorationStyle;
 
   /// Overrides the selected value's text style. Takes precedence over
-  /// [AppSelectStyle.textStyle].
+  /// [AppSelectStyle.inputValueStyle].
   final TextStyle? inputValueStyle;
 
   /// Overrides the placeholder's text style. Takes precedence over
@@ -149,7 +149,7 @@ class AppSingleSelect<T> extends StatefulWidget {
   final TextStyle? hintStyle;
 
   /// Overrides the field label's text style. Takes precedence over
-  /// [AppSelectStyle.labelStyle].
+  /// [AppSelectStyle.inputLabelStyle].
   final TextStyle? inputLabelStyle;
 
   /// Builds the trigger field's selected-value display in place of the
@@ -194,9 +194,12 @@ class _AppSingleSelectState<T> extends State<AppSingleSelect<T>> {
   @override
   void didUpdateWidget(AppSingleSelect<T> oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.value != widget.value || oldWidget.options != widget.options) {
+    if (oldWidget.value != widget.value ||
+        oldWidget.options != widget.options) {
       _cachedLabel = _computeLabel();
-      WidgetsBinding.instance.addPostFrameCallback((_) => _fieldKey.currentState?.didChange(widget.value));
+      WidgetsBinding.instance.addPostFrameCallback(
+        (_) => _fieldKey.currentState?.didChange(widget.value),
+      );
     }
     if (oldWidget.options != widget.options ||
         oldWidget.hasMore != widget.hasMore ||
@@ -215,12 +218,18 @@ class _AppSingleSelectState<T> extends State<AppSingleSelect<T>> {
     super.dispose();
   }
 
-  LazySelectState<T> _buildLazyState() =>
-      LazySelectState(options: widget.options, hasMore: widget.hasMore, loadingMore: widget.loadingMore);
+  LazySelectState<T> _buildLazyState() => LazySelectState(
+    options: widget.options,
+    hasMore: widget.hasMore,
+    loadingMore: widget.loadingMore,
+  );
 
   String? _computeLabel() {
     if (widget.value == null) return null;
-    return widget.options.where((o) => o.value == widget.value).firstOrNull?.label;
+    return widget.options
+        .where((o) => o.value == widget.value)
+        .firstOrNull
+        ?.label;
   }
 
   /// Opens the picker sheet above the app chrome and reports the result.
@@ -272,7 +281,7 @@ class _AppSingleSelectState<T> extends State<AppSingleSelect<T>> {
           SelectFieldLabel(
             text: widget.label,
             enabled: isEnabled,
-            style: widget.inputLabelStyle ?? widget.style.labelStyle,
+            style: widget.inputLabelStyle ?? widget.style.inputLabelStyle,
             required: widget.required,
           ),
           const SizedBox(height: kSelectSpaceSm),

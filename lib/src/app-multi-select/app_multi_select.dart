@@ -81,7 +81,7 @@ class AppMultiSelect<T> extends StatefulWidget {
   final InputDecorationBuilder? inputDecorationStyle;
 
   /// Overrides the selected values' text style. Takes precedence over
-  /// [AppSelectStyle.textStyle].
+  /// [AppSelectStyle.inputValueStyle].
   final TextStyle? inputValueStyle;
 
   /// Overrides the placeholder's text style. Takes precedence over
@@ -89,7 +89,7 @@ class AppMultiSelect<T> extends StatefulWidget {
   final TextStyle? hintStyle;
 
   /// Overrides the field label's text style. Takes precedence over
-  /// [AppSelectStyle.labelStyle].
+  /// [AppSelectStyle.inputLabelStyle].
   final TextStyle? inputLabelStyle;
 
   /// Builds the trigger field's selected-value display in place of the
@@ -217,7 +217,7 @@ class _AppMultiSelectState<T> extends State<AppMultiSelect<T>> {
         SelectFieldLabel(
           text: widget.label,
           enabled: widget.enabled,
-          style: widget.inputLabelStyle ?? widget.style.labelStyle,
+          style: widget.inputLabelStyle ?? widget.style.inputLabelStyle,
         ),
         const SizedBox(height: kSelectSpaceSm),
         // IgnorePointer blocks touch to the entire subtree when disabled.

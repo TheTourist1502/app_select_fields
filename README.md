@@ -169,9 +169,9 @@ AppMultiSelect<String>(
 | `style` | `AppSelectStyle` | `AppSelectStyle()` | Visual/copy overrides — see below. |
 | `noRecordWidget` | `Widget?` | `null` | Shown centered in the sheet's list area when `options` is empty. Defaults to a "No Records Found !" message. |
 | `inputDecorationStyle` | `InputDecoration Function(InputDecoration)?` | `null` | Customizes the trigger's resolved `InputDecoration`. |
-| `inputValueStyle` | `TextStyle?` | `null` | Overrides the selected value's text style. Takes precedence over `AppSelectStyle.textStyle`. |
+| `inputValueStyle` | `TextStyle?` | `null` | Overrides the selected value's text style. Takes precedence over `AppSelectStyle.inputValueStyle`. |
 | `hintStyle` | `TextStyle?` | `null` | Overrides the placeholder's text style. Takes precedence over `AppSelectStyle.hintStyle`. |
-| `inputLabelStyle` | `TextStyle?` | `null` | Overrides the field label's text style. Takes precedence over `AppSelectStyle.labelStyle`. |
+| `inputLabelStyle` | `TextStyle?` | `null` | Overrides the field label's text style. Takes precedence over `AppSelectStyle.inputLabelStyle`. |
 | `selectedInputTemplate` | `Widget Function(BuildContext, String label, T value)?` | `null` | Builds the trigger's selected-value display in place of the default `Text`. |
 | `optionTemplate` | `Widget Function(BuildContext, String label, T value)?` | `null` | Builds each row's content in the option sheet in place of the default `Text`. |
 | `cancelButtonLabel` | `String?` | `null` | Overrides the sheet's Cancel button label. Takes precedence over `AppSelectStyle.cancelLabel`. |
@@ -193,9 +193,9 @@ AppMultiSelect<String>(
 | `noRecordWidget` | `Widget?` | `null` | Shown centered in the sheet's list area when `options` is empty. Defaults to a "No Records Found !" message. |
 | `displaySelectedCount` | `bool` | `true` | Whether the sheet's "N selected" summary chip shows above the option list. |
 | `inputDecorationStyle` | `InputDecoration Function(InputDecoration)?` | `null` | Customizes the trigger's resolved `InputDecoration`. |
-| `inputValueStyle` | `TextStyle?` | `null` | Overrides the selected values' text style. Takes precedence over `AppSelectStyle.textStyle`. |
+| `inputValueStyle` | `TextStyle?` | `null` | Overrides the selected values' text style. Takes precedence over `AppSelectStyle.inputValueStyle`. |
 | `hintStyle` | `TextStyle?` | `null` | Overrides the placeholder's text style. Takes precedence over `AppSelectStyle.hintStyle`. |
-| `inputLabelStyle` | `TextStyle?` | `null` | Overrides the field label's text style. Takes precedence over `AppSelectStyle.labelStyle`. |
+| `inputLabelStyle` | `TextStyle?` | `null` | Overrides the field label's text style. Takes precedence over `AppSelectStyle.inputLabelStyle`. |
 | `selectedInputTemplate` | `Widget Function(BuildContext, String label, T value)?` | `null` | Builds each selected option's display, laid out in a `Wrap` in the trigger, in place of the default joined text. Falls back to the joined text once the count passes `maxSelectedLabel`. |
 | `optionTemplate` | `Widget Function(BuildContext, String label, T value)?` | `null` | Builds each row's content in the option sheet in place of the default `Text`. |
 | `cancelButtonLabel` | `String?` | `null` | Overrides the sheet's Cancel button label. Takes precedence over `AppSelectStyle.cancelLabel`. |
@@ -218,16 +218,24 @@ Every field is optional and falls back to a Material 3 default or an English str
 |---|---|---|---|
 | `borderRadius` | `double` | `12` | Corner radius of the trigger field's border. |
 | `sheetBorderRadius` | `double` | `20` | Corner radius of the sheet's top corners. |
-| `chevronAnimationDuration` | `Duration` | `150ms` | How long the trigger's chevron takes to flip. Skipped when reduce-motion is on. |
-| `checkAnimationDuration` | `Duration` | `180ms` | How long a radio dot / checkbox takes to animate. Skipped when reduce-motion is on. |
-| `labelStyle` | `TextStyle?` | `textTheme.labelMedium` | Overrides the caption above the field. |
-| `hintStyle` | `TextStyle?` | `textTheme.bodyMedium` | Overrides the placeholder text style. |
-| `textStyle` | `TextStyle?` | `textTheme.bodyMedium` | Overrides the selected value's text style. |
+| `chevronAnimationDuration` | `Duration` | `250ms` | How long the trigger's chevron takes to flip. Skipped when reduce-motion is on. |
+| `checkAnimationDuration` | `Duration` | `250ms` | How long a radio dot / checkbox takes to animate. Skipped when reduce-motion is on. |
+| `inputLabelStyle` | `TextStyle?` | `textTheme.labelMedium` | Overrides the caption above the field. Overridden by the widget's own `inputLabelStyle`. |
+| `hintStyle` | `TextStyle?` | `textTheme.bodyMedium` | Overrides the placeholder text style. Overridden by the widget's own `hintStyle`. |
+| `inputValueStyle` | `TextStyle?` | `textTheme.bodyMedium` | Overrides the selected value's text style. Overridden by the widget's own `inputValueStyle`. |
+| `inputDecorationStyle` | `InputDecoration Function(InputDecoration)?` | `null` | Customizes the trigger's resolved `InputDecoration`. Overridden by the widget's own `inputDecorationStyle`. |
 | `searchHint` | `String` | `'Search'` | Placeholder for the sheet's search field. |
 | `cancelLabel` | `String` | `'Cancel'` | Label of the button that closes the sheet without changes. |
 | `clearLabel` | `String` | `'Clear'` | Label of the button that clears the current selection. |
 | `okLabel` | `String` | `'OK'` | Label of the button that confirms a multi-select's choices. |
+| `cancelButtonStyle` | `ButtonStyle?` | `null` | Style of the Cancel button. Overridden by the widget's own `cancelButtonStyle`. |
 | `selectedCountLabel` | `String Function(int)?` | `'$count selected'` | Builds the "N selected" summary text. |
+
+Every field the widgets also expose directly (`inputLabelStyle`, `hintStyle`,
+`inputValueStyle`, `inputDecorationStyle`, `cancelButtonStyle`) can be set on
+either the widget or `style` — the widget-level one wins when both are set,
+so `style` is a good place for values shared across many fields while the
+widget-level params stay for one-off overrides:
 
 ```dart
 AppSingleSelect<String>(
@@ -236,9 +244,9 @@ AppSingleSelect<String>(
   value: selectedCountry,
   onChanged: (value) => setState(() => selectedCountry = value),
   style: const AppSelectStyle(
-    labelStyle: TextStyle(fontWeight: FontWeight.bold, color: Colors.indigo),
+    inputLabelStyle: TextStyle(fontWeight: FontWeight.bold, color: Colors.indigo),
     hintStyle: TextStyle(fontStyle: FontStyle.italic, color: Colors.grey),
-    textStyle: TextStyle(fontWeight: FontWeight.w600), // selected value's style
+    inputValueStyle: TextStyle(fontWeight: FontWeight.w600),
   ),
 );
 ```

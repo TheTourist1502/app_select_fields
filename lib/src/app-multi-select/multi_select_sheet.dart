@@ -187,7 +187,7 @@ class _SheetActions extends StatelessWidget {
         Expanded(
           child: FilledButton.tonal(
             onPressed: onCancel,
-            style: cancelButtonStyle,
+            style: cancelButtonStyle ?? style.cancelButtonStyle,
             child: Text(cancelButtonLabel ?? style.cancelLabel),
           ),
         ),
